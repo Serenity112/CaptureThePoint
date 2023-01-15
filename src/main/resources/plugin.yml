@@ -1,0 +1,10 @@
+name: CaptureThePoint
+version: '${project.version}'
+main: minecraftevent.capturethepoint.CaptureThePoint
+authors: [ WhiteRainbow ]
+description: CaptureThePoint plugin
+commands:
+  ctp: {}
+  drop: {}
+  md: {}
+  team: {}
