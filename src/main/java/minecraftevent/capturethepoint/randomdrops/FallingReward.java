@@ -190,11 +190,6 @@ public class FallingReward {
         }
     }
 
-    private static addBuffItemsToInv() {
-
-    }
-
-
     private static int getRandomNumberInRange(int min, int max, Random rand) {
         return rand.nextInt((max - min) + 1) + min;
     }

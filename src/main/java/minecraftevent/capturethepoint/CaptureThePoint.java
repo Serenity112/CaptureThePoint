@@ -6,6 +6,7 @@ import minecraftevent.capturethepoint.commands.ctp;
 import minecraftevent.capturethepoint.commands.md;
 import minecraftevent.capturethepoint.commands.team;
 import minecraftevent.capturethepoint.listeners.ChestListener;
+import minecraftevent.capturethepoint.listeners.ItemTrigger;
 import minecraftevent.capturethepoint.randomdrops.FallingReward;
 
 import org.bukkit.Location;
@@ -40,16 +41,17 @@ public final class CaptureThePoint extends JavaPlugin {
         World world = getServer().getWorlds().get(0);
         initPoints(world);
 
+        new team();
+        new ctp();
+        new md();
+
         new FallingReward();
         new ProcessCapture(world);
 
         getServer().getPluginManager().registerEvents(new ChestListener(), this);
+        getServer().getPluginManager().registerEvents(new ItemTrigger(), this);
 
         ProcessCapture.startCapturing();
-
-        new team();
-        new ctp();
-        new md();
     }
 
     @Override
