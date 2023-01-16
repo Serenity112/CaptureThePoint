@@ -4,6 +4,7 @@ import com.github.yeetmanlord.raycast_util.BlockRayCastResult;
 import com.github.yeetmanlord.raycast_util.RayCastUtility;
 import com.github.yeetmanlord.raycast_util.ResultType;
 import minecraftevent.capturethepoint.CaptureThePoint;
+import net.minecraft.server.v1_12_R1.BlockBarrier;
 import org.bukkit.*;
 import org.bukkit.command.CommandException;
 import org.bukkit.entity.Entity;
@@ -33,7 +34,7 @@ public class AirStrike {
         // Мейн рейкаст
         BlockRayCastResult target = RayCastUtility.rayCastBlocks(player, maxDistance, true, RayCastUtility.Precision.ACCURATE_BLOCK);
 
-        if (target.getType() != ResultType.BLOCK) {
+        if (target.getType() != ResultType.BLOCK || target.getBlock().getType() == Material.BARRIER) {
             player.sendMessage(ChatColor.DARK_RED + "Target is out of range.");
             throw new CommandException();
         } else {
@@ -117,7 +118,7 @@ public class AirStrike {
         // Мейн рейкаст
         BlockRayCastResult target = RayCastUtility.rayCastBlocks(player, maxDistance, true, RayCastUtility.Precision.ACCURATE_BLOCK);
 
-        if (target.getType() != ResultType.BLOCK) {
+        if (target.getType() != ResultType.BLOCK || target.getBlock().getType() == Material.BARRIER) {
             player.sendMessage(ChatColor.DARK_RED + "Target is out of range.");
             throw new CommandException();
         } else {
@@ -260,7 +261,7 @@ public class AirStrike {
         // Мейн рейкаст
         BlockRayCastResult target = RayCastUtility.rayCastBlocks(player, maxDistance, true, RayCastUtility.Precision.ACCURATE_BLOCK);
 
-        if (target.getType() != ResultType.BLOCK) {
+        if (target.getType() != ResultType.BLOCK || target.getBlock().getType() == Material.BARRIER) {
             player.sendMessage(ChatColor.DARK_RED + "Target is out of range.");
             throw new CommandException();
         } else {

@@ -9,5 +9,5 @@ public enum Device {
     BulletproofVest,
     Scanner,
     Stimulator,
-    PointDefence,
+    AllySummon,
 }

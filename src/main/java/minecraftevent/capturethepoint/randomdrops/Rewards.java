@@ -87,7 +87,15 @@ public class Rewards {
     }
 
     public static Device getRandomSpecialItem() {
+        Random rand = new Random();
+        int type = rand.nextInt(2);
+        switch (type) {
+            case 0:
+                return Device.Scanner;
+            case 1:
+                return Device.AllySummon;
+        }
+
         return Device.Scanner;
     }
-
 }

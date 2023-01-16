@@ -61,7 +61,6 @@ public class FallingReward {
         world.spawnParticle(Particle.CLOUD, x, newloc.getY() + 50, z, 100, 0, 25, 0, 0.01);
 
 
-
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.sendMessage(ChatColor.BOLD + "" + ChatColor.DARK_PURPLE + "Random drop from the sky at " + x + " " + newloc.getY() + " " + z);
         }
@@ -86,14 +85,13 @@ public class FallingReward {
             summonedDrops.remove(block.getLocation());
         }, 3600);
 
-        summonedDrops.put(block.getLocation(), new int[] {chestDespawnTimer, chestMarkerTimer});
+        summonedDrops.put(block.getLocation(), new int[]{chestDespawnTimer, chestMarkerTimer});
 
         putRandomDropInChest(block, rand);
     }
 
     static void putRandomDropInChest(Block block, Random rand) {
-        int reward = rand.nextInt(9);
-
+        int reward = rand.nextInt(7);
 
         Chest chest = (Chest) block.getState();
         Inventory dropInv = chest.getInventory();
@@ -108,6 +106,8 @@ public class FallingReward {
                     dropInv.addItem(i);
                 }
             }
+
+            addRandomBuffsToChest(dropInv, rand);
         }
 
         // Эирстрайки
@@ -115,11 +115,11 @@ public class FallingReward {
             for (int i = 0; i < 3; i++) {
                 switch (i) {
                     case 1:
-                        if (rand.nextInt(100) >= 50)
+                        if (rand.nextInt(100) >= 66)
                             return;
                         break;
                     case 2:
-                        if (rand.nextInt(100) >= 25)
+                        if (rand.nextInt(100) >= 33)
                             return;
                         break;
                 }
@@ -127,66 +127,28 @@ public class FallingReward {
                 dropInv.addItem(getDeviceItem(Rewards.getRandomAirStrike(), 1));
             }
         }
+    }
 
-        // Предметы (баффы + специальные)
-        if (reward == 7) {
-            for (int i = 0; i < 4; i++) {
-                switch (i) {
-                    case 1:
-                        if (rand.nextInt(100) >= 95)
-                            return;
-                        break;
-                    case 2:
-                        if (rand.nextInt(100) >= 90)
-                            return;
-                        break;
-                    case 3:
-                        if (rand.nextInt(100) >= 85)
-                            return;
-                        break;
-                }
-
-                int item = rand.nextInt(10);
-                Device device = item == 0 ? Rewards.getRandomSpecialItem() : Rewards.getRandomBuffItem();
-                dropInv.addItem(getDeviceItem(device, 1));
+    private static void addRandomBuffsToChest(Inventory chestinv, Random rand) {
+        for (int i = 0; i < 4; i++) {
+            switch (i) {
+                case 1:
+                    if (rand.nextInt(100) >= 95)
+                        return;
+                    break;
+                case 2:
+                    if (rand.nextInt(100) >= 90)
+                        return;
+                    break;
+                case 3:
+                    if (rand.nextInt(100) >= 85)
+                        return;
+                    break;
             }
-        }
 
-        // Хилки
-        if (reward == 8) {
-            for (int i = 0; i < 4; i++) {
-                switch (i) {
-                    case 1:
-                        if (rand.nextInt(100) >= 95)
-                            return;
-                        break;
-                    case 2:
-                        if (rand.nextInt(100) >= 90)
-                            return;
-                        break;
-                    case 3:
-                        if (rand.nextInt(100) >= 85)
-                            return;
-                        break;
-                }
-
-                int healid = rand.nextInt(3);
-                ItemStack item = null;
-
-                switch (healid) {
-                    case 0:
-                        item = new ItemStack(4299);
-                        break;
-                    case 1:
-                        item = getDeviceItem(Device.Injection, 1);
-                        break;
-                    case 2:
-                        item = getDeviceItem(Device.Stimulator, 1);
-                        break;
-                }
-
-                dropInv.addItem(item);
-            }
+            int item = rand.nextInt(10);
+            Device device = item == 0 ? Rewards.getRandomSpecialItem() : Rewards.getRandomBuffItem();
+            chestinv.addItem(getDeviceItem(device, 1));
         }
     }
 

@@ -41,19 +41,19 @@ public class md extends AbstractCommand {
                 item = new ItemStack(Material.MAGMA_CREAM, amount);
                 meta = item.getItemMeta();
                 meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&4&lArea AirStrike"));
-                meta.setLore(Lists.newArrayList("Right-click to call airstrike"));
+                meta.setLore(Lists.newArrayList("Right-click to call Area Airstrike"));
                 break;
             case AirstrikeCluster:
                 item = new ItemStack(Material.BLAZE_POWDER, amount);
                 meta = item.getItemMeta();
                 meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&4&lCluster AirStrike"));
-                meta.setLore(Lists.newArrayList("Right-click to call airstrike"));
+                meta.setLore(Lists.newArrayList("Right-click to call Cluster Airstrike"));
                 break;
             case AirstrikeBreakdown:
                 item = new ItemStack(Material.FERMENTED_SPIDER_EYE, amount);
                 meta = item.getItemMeta();
                 meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&4&lBreakdown AirStrike"));
-                meta.setLore(Lists.newArrayList("Right-click to call airstrike"));
+                meta.setLore(Lists.newArrayList("Right-click to call Breakdown Airstrike"));
                 break;
             case Injection: // Быстрый хил + слепота
                 item = new ItemStack(Material.SLIME_BALL, amount);
@@ -71,19 +71,25 @@ public class md extends AbstractCommand {
                 item = new ItemStack(Material.PAPER, amount);
                 meta = item.getItemMeta();
                 meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&7&lBulletproofVest"));
-                meta.setLore(Lists.newArrayList("Right-click to take temporary defence"));
+                meta.setLore(Lists.newArrayList("Right-click to get temporary defence"));
                 break;
             case Scanner:
                 item = new ItemStack(Material.SULPHUR, amount);
                 meta = item.getItemMeta();
                 meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&9&lScanner"));
-                meta.setLore(Lists.newArrayList("Right-click scan enemies"));
+                meta.setLore(Lists.newArrayList("Right-click to scan enemies"));
                 break;
             case Stimulator:
                 item = new ItemStack(Material.SUGAR, amount);
                 meta = item.getItemMeta();
                 meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a&lStimulator"));
                 meta.setLore(Lists.newArrayList("Right-click to get temporary regeneration"));
+                break;
+            case AllySummon:
+                item = new ItemStack(Material.BOOK, amount);
+                meta = item.getItemMeta();
+                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a&lSummon ally"));
+                meta.setLore(Lists.newArrayList("Right-click to summon allies on your points"));
                 break;
         }
 

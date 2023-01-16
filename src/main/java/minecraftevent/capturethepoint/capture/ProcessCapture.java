@@ -21,10 +21,10 @@ public class ProcessCapture {
     private static final double radius = 2.5;
 
     // Scoreboard
-    private static Scoreboard board;
+    private static Scoreboard board = CaptureThePoint.board;
     private static Objective pointObjective;
-    private static Team redTeam;
-    private static Team blueTeam;
+    private static Team redTeam = CaptureThePoint.redTeam;
+    private static Team blueTeam = CaptureThePoint.blueTeam;
     private static int redscore = 0;
     private static int bluescore = 0;
 
@@ -50,11 +50,7 @@ public class ProcessCapture {
 
     public ProcessCapture(World world) {
         ProcessCapture.world = world;
-        ScoreboardManager manager = Bukkit.getScoreboardManager();
-        board = manager.getMainScoreboard();
         pointObjective = board.getObjective(ChatColor.translateAlternateColorCodes('&', "&6&lPOINTS"));
-        redTeam = board.getTeam("Red");
-        blueTeam = board.getTeam("Blue");
         resetScoreboard();
     }
 
