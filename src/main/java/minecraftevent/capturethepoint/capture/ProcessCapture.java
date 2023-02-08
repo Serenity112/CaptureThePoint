@@ -10,8 +10,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 
 import java.util.HashMap;
+import java.util.Random;
 
-import static java.lang.Math.abs;
+import static java.lang.Math.*;
 import static minecraftevent.capturethepoint.CaptureThePoint.State.*;
 
 public class ProcessCapture {
@@ -42,11 +43,7 @@ public class ProcessCapture {
     // Points names
     private static HashMap<String, String> pointsNames = new HashMap<>();
 
-    private static final String maxscore = "10000";
-
-    private static int redDropBorder = 1500;
-    private static int blueDropBorder = 1500;
-    private static int borderIncrement = 1500;
+    private static final int maxscore = 10000;
 
     public ProcessCapture(World world) {
         ProcessCapture.world = world;
@@ -163,6 +160,8 @@ public class ProcessCapture {
     }
 
     public static void startCapturing() {
+        FallingReward.startTimerDrop();
+
         capturingId = Bukkit.getScheduler().scheduleSyncRepeatingTask(CaptureThePoint.getInstance(), () -> {
             for (Point point : CaptureThePoint.getInstance().PointsArray) {
 
@@ -207,9 +206,15 @@ public class ProcessCapture {
 
                 if (foundRedPlayer && !foundBluePlayer) {
                     if (point.timer == pointsToCapture) {
-                        if (point.state != RED)
-                            Rewards.giveRandomReward(world.getNearbyEntities(point.location, radius, radius, radius), redTeam);
-                        scoreboardSetPointState(point, RED);
+                        if (point.state != RED) {
+                            Rewards.giveRandomRewardOnCapture(world.getNearbyEntities(point.location, radius, radius, radius), redTeam);
+                            scoreboardSetPointState(point, RED);
+
+                            if ((new Random().nextInt(10)) == 0) {
+                                spawnAlly(point.location, RED);
+                            }
+                        }
+
 
                         for (Entity nearbyEntity : world.getNearbyEntities(point.location, 3 * radius, 3 * radius, 3 * radius)) {
                             if (nearbyEntity instanceof Player) {
@@ -226,9 +231,14 @@ public class ProcessCapture {
 
                 if (foundBluePlayer && !foundRedPlayer) {
                     if (point.timer == -pointsToCapture) {
-                        if (point.state != BLUE)
-                            Rewards.giveRandomReward(world.getNearbyEntities(point.location, radius, radius, radius), blueTeam);
-                        scoreboardSetPointState(point, BLUE);
+                        if (point.state != BLUE) {
+                            Rewards.giveRandomRewardOnCapture(world.getNearbyEntities(point.location, radius, radius, radius), blueTeam);
+                            scoreboardSetPointState(point, BLUE);
+
+                            if ((new Random().nextInt(10)) == 0) {
+                                spawnAlly(point.location, BLUE);
+                            }
+                        }
 
                         for (Entity nearbyEntity : world.getNearbyEntities(point.location, 3 * radius, 3 * radius, 3 * radius)) {
                             if (nearbyEntity instanceof Player) {
@@ -242,7 +252,6 @@ public class ProcessCapture {
                         scoreboardTransitionPointState(point, BLUE, point.timer);
                     }
                 }
-
 
                 if (!(foundBluePlayer || foundRedPlayer)) {
                     if (point.playerFoundLastIteration) {
@@ -290,25 +299,65 @@ public class ProcessCapture {
                         point.location.clone().add(0, -2, 0).getBlock().setType(Material.BEACON);
                         break;
                 }
+
+                if(redscore >= maxscore ) {
+                    stopCapturing();
+
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        player.sendTitle("Team " + ChatColor.RED + "RED" + ChatColor.WHITE + " wins!", "", 10, 2400, 20);
+                    }
+                }
+
+                if(bluescore >= maxscore) {
+                    stopCapturing();
+
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        player.sendTitle("Team " + ChatColor.BLUE + "BLUE" + ChatColor.WHITE + " wins!", "", 10, 2400, 20);
+                    }
+                }
             }
 
-            if (redscore >= redDropBorder) {
-                redDropBorder += borderIncrement;
-                FallingReward.summonDrop();
-            }
 
-            if (bluescore >= blueDropBorder) {
-                blueDropBorder += borderIncrement;
-                FallingReward.summonDrop();
-            }
         }, 0, scoreUpdatePeriodTics);
     }
 
     public static void stopCapturing() {
+        FallingReward.stopTimerDrop();
+
         Bukkit.getScheduler().cancelTask(capturingId);
     }
 
     public static void resetCapturing() {
+        FallingReward.stopTimerDrop();
+        FallingReward.startTimerDrop();
+
         resetScoreboard();
+    }
+
+    private static void spawnAlly(Location location, CaptureThePoint.State state) {
+        Random rand = new Random();
+
+        int allynum = getRandomNumberInRange(1, 2, rand);
+
+        for (int i = 0; i < allynum; i++) {
+            double r = 4 * sqrt(random());
+            double theta = random() * 2 * PI;
+            double x = location.getX() + r * cos(theta);
+            double y = location.getY();
+            double z = location.getZ() + r * sin(theta);
+
+            switch (state) {
+                case RED:
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "noppes clone spawn SovetRed 2 0:" + x + "," + y + "," + z);
+                    break;
+                case BLUE:
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "noppes clone spawn NatoBlue 1 0:" + x + "," + y + "," + z);
+                    break;
+            }
+        }
+    }
+
+    private static int getRandomNumberInRange(int min, int max, Random rand) {
+        return rand.nextInt((max - min) + 1) + min;
     }
 }

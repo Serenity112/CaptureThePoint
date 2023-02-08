@@ -4,11 +4,9 @@ import com.github.yeetmanlord.raycast_util.BlockRayCastResult;
 import com.github.yeetmanlord.raycast_util.RayCastUtility;
 import com.github.yeetmanlord.raycast_util.ResultType;
 import minecraftevent.capturethepoint.CaptureThePoint;
-import net.minecraft.server.v1_12_R1.BlockBarrier;
 import org.bukkit.*;
 import org.bukkit.command.CommandException;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -25,9 +23,9 @@ public class AirStrike {
         World world = player.getWorld();
 
         float blowCount = 13;
-        float blowPower = 4.5f;
-        float explosionRadius = 6;
-        int blowDelay = 500;
+        float blowPower = 5f;
+        float explosionRadius = 5;
+        int blowDelay = 250;
         float maxDistance = 200;
         float alertRadius = 15;
 
@@ -64,16 +62,16 @@ public class AirStrike {
             for (Entity nearby : world.getNearbyEntities(targetLocation, alertRadius, alertRadius, alertRadius)) {
                 if (nearby instanceof Player) {
                     Player entity = (Player) nearby;
-                    entity.sendMessage(ChatColor.DARK_RED + "WATCH OUT FOR AIRSTRIKE!");
+                    entity.sendTitle(ChatColor.DARK_RED + "WATCH OUT FOR AIRSTRIKE!", "", 10, 30, 10);
                 }
             }
 
-            for (int i = 0; i < 1; i++) {
+            for (int i = 0; i < 2; i++) {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
                         "playsound techguns:guns.locked master " + player.getName() + " " +
                                 player.getLocation().getX() + " " + player.getLocation().getY() + " " + player.getLocation().getZ() + " 1 1");
 
-                sleep(2000);
+                sleep(1000);
             }
 
 
@@ -89,8 +87,8 @@ public class AirStrike {
                 }
 
                 Bukkit.getScheduler().scheduleSyncDelayedTask(CaptureThePoint.getInstance(), () -> {
-                    world.spawnParticle(Particle.CLOUD, finalLoc.getX(), finalLoc.getY() + 50, finalLoc.getZ(), 1000, 0, 25, 0, 0.05);
-                    world.spawnParticle(Particle.FLAME, finalLoc.getX(), finalLoc.getY() + 1, finalLoc.getZ(), 100, 1, 1, 1, 0.2);
+                    world.spawnParticle(Particle.CLOUD, finalLoc.getX(), finalLoc.getY() + 50, finalLoc.getZ(), 250, 0, 25, 0, 0.05);
+                    world.spawnParticle(Particle.FLAME, finalLoc.getX(), finalLoc.getY() + 1, finalLoc.getZ(), 50, 1, 1, 1, 0.2);
                     world.createExplosion(finalLoc.getX(), finalLoc.getY() + 1, finalLoc.getZ(), blowPower, true, true);
                 });
 
@@ -132,9 +130,9 @@ public class AirStrike {
             // Предупреждение
             double alertRadius = 16 + clusterRadius;
             for (Entity nearby : world.getNearbyEntities(targetBlowLocation, alertRadius, alertRadius, alertRadius)) {
-                if (nearby instanceof LivingEntity) {
-                    LivingEntity entity = (LivingEntity) nearby;
-                    entity.sendMessage(ChatColor.DARK_RED + "WATCH OUT FOR CLUSTER AIRSTRIKE!");
+                if (nearby instanceof Player) {
+                    Player entity = (Player) nearby;
+                    entity.sendTitle(ChatColor.DARK_RED + "WATCH OUT FOR AIRSTRIKE!", "", 10, 30, 10);
                 }
             }
 
@@ -221,13 +219,10 @@ public class AirStrike {
                                 "playsound modularwarfare:explosions.distant master @a " + randomTarget.getX() + " " + randomTarget.getY() + 2 + " " + randomTarget.getZ() + " 5 1");
 
                         for (Entity nearby : world.getNearbyEntities(randomTarget, clusterBlowRange, 4, clusterBlowRange)) {
-                            if (nearby instanceof LivingEntity) {
-                                LivingEntity entity = (LivingEntity) nearby;
+                            if (nearby instanceof Player) {
+                                Player entity = (Player) nearby;
                                 double distance = randomTarget.distance(entity.getLocation());
                                 entity.damage(clusterDamage * (1 - distance / clusterBlowRange), player);
-
-
-                                // entity.setLastDamageCause(new EntityDamageEvent(player, ENTITY_ATTACK, 0));
                             }
                         }
                     });
@@ -245,15 +240,15 @@ public class AirStrike {
     public static void performBreakdownStrike(Player player) throws CommandException {
         World world = player.getWorld();
 
-        float blowCount = 3f;
+        float blowCount = 2f;
         float areaRadius = 5f;
-        float explosionPower = 5f;
+        float explosionPower = 7f;
 
-        int thickness = 4;
+        int thickness = 5;
         int breakdownCount = 3;
         float breakdownChance = 0.75f;
 
-        int blowDelay = 500;
+        int blowDelay = 350;
         float maxDistance = 200;
 
         float alertRadius = 15;
@@ -270,7 +265,14 @@ public class AirStrike {
 
         Location targetBlowLocation = target.getBlock().getLocation();
         List<Location> targetList = new ArrayList<>();
-        targetList.add(targetBlowLocation);
+
+        double r0 = 2 * sqrt(random());
+        double theta0 = random() * 2 * PI;
+        double x0 = targetBlowLocation.getX() + r0 * cos(theta0);
+        double z0 = targetBlowLocation.getZ() + r0 * sin(theta0);
+        Location newLoc0 = new Location(world, x0, targetBlowLocation.getY(), z0);
+        targetList.add(newLoc0);
+
 
         // Пресет точек
         for (int maincounter = 1; maincounter < blowCount; maincounter++) {
@@ -286,9 +288,9 @@ public class AirStrike {
         // Взрывы
         Bukkit.getScheduler().runTaskAsynchronously(CaptureThePoint.getInstance(), () -> {
             for (Entity nearby : world.getNearbyEntities(targetBlowLocation, alertRadius, alertRadius, alertRadius)) {
-                if (nearby instanceof LivingEntity) {
-                    LivingEntity entity = (LivingEntity) nearby;
-                    entity.sendMessage(ChatColor.DARK_RED + "БОЙСЯ ПРОБИВАЮЩЕГО АВИАУДАРА!");
+                if (nearby instanceof Player) {
+                    Player entity = (Player) nearby;
+                    entity.sendTitle(ChatColor.DARK_RED + "WATCH OUT FOR AIRSTRIKE!", "", 10, 30, 10);
                 }
             }
 
@@ -319,7 +321,7 @@ public class AirStrike {
                     Bukkit.getScheduler().scheduleSyncDelayedTask(CaptureThePoint.getInstance(), () -> {
                         world.spawnParticle(Particle.CLOUD, breakdown.getX(), breakdown.getY() + 50, breakdown.getZ(), 1000, 0, 25, 0, 0.05);
                         world.spawnParticle(Particle.FLAME, breakdown.getX(), breakdown.getY() + 1, breakdown.getZ(), 100, 1, 1, 1, 0.2);
-                        world.createExplosion(breakdown.getX(), breakdown.getY() + 1, breakdown.getZ(), explosionPower* finalPowerDowngrade, true, true);
+                        world.createExplosion(breakdown.getX(), breakdown.getY() + 1, breakdown.getZ(), explosionPower * finalPowerDowngrade, true, true);
                     });
 
                     powerDowngrade = powerDowngrade * 0.85f;
@@ -351,7 +353,7 @@ public class AirStrike {
         target.setY(height);
 
         while (height > 0) {
-            while (target.getBlock().getType() == Material.AIR && height > 0 ) {
+            while (target.getBlock().getType() == Material.AIR && height > 0) {
                 height--;
                 target.setY(height);
             }
@@ -359,7 +361,7 @@ public class AirStrike {
             // Новый удар в пол
             i_breakdown++;
             targets.add(target.clone());
-            if(i_breakdown >= breakdownCount) {
+            if (i_breakdown >= breakdownCount) {
                 return targets;
             }
 

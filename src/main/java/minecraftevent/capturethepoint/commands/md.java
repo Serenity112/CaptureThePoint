@@ -67,10 +67,10 @@ public class md extends AbstractCommand {
                 meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&c&lAdrenaline"));
                 meta.setLore(Lists.newArrayList("Right-click to take Adrenaline"));
                 break;
-            case BulletproofVest: // Временная броня
+            case KevlarPlate: // Временная броня
                 item = new ItemStack(Material.PAPER, amount);
                 meta = item.getItemMeta();
-                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&7&lBulletproofVest"));
+                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&7&lKevlar Plate"));
                 meta.setLore(Lists.newArrayList("Right-click to get temporary defence"));
                 break;
             case Scanner:
@@ -84,12 +84,6 @@ public class md extends AbstractCommand {
                 meta = item.getItemMeta();
                 meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a&lStimulator"));
                 meta.setLore(Lists.newArrayList("Right-click to get temporary regeneration"));
-                break;
-            case AllySummon:
-                item = new ItemStack(Material.BOOK, amount);
-                meta = item.getItemMeta();
-                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&a&lSummon ally"));
-                meta.setLore(Lists.newArrayList("Right-click to summon allies on your points"));
                 break;
         }
 

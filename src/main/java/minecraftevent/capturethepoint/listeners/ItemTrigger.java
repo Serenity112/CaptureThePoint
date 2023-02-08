@@ -1,7 +1,6 @@
 package minecraftevent.capturethepoint.listeners;
 
 import minecraftevent.capturethepoint.Devices.AirStrike;
-import minecraftevent.capturethepoint.Devices.AllySummon;
 import minecraftevent.capturethepoint.Devices.Scanner;
 import org.bukkit.command.CommandException;
 import org.bukkit.entity.Player;
@@ -69,10 +68,6 @@ public class ItemTrigger implements Listener {
                             break;
                         case SUGAR: // Stimulator
                             player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 400, 1, true, false));
-                            item.setAmount(item.getAmount() - 1);
-                            break;
-                        case BOOK: // Stimulator
-                            AllySummon.spawnAllyOnPoints(player);
                             item.setAmount(item.getAmount() - 1);
                             break;
                     }

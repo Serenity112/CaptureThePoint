@@ -1,6 +1,7 @@
 package minecraftevent.capturethepoint.randomdrops;
 
 import minecraftevent.capturethepoint.Devices.Device;
+import minecraftevent.capturethepoint.commands.md;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -13,7 +14,7 @@ import java.util.Set;
 import static org.bukkit.Bukkit.getPlayer;
 
 public class Rewards {
-    public static void giveRandomReward(Collection<Entity> entities, Team team) {
+    public static void giveRandomRewardOnCapture(Collection<Entity> entities, Team team) {
         Set<String> teamMembers = team.getEntries();
 
         for (String entry : teamMembers) {
@@ -39,18 +40,38 @@ public class Rewards {
                 switch (rewardType) {
                     case 0:
                         Device strike = getRandomAirStrike();
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "md " + player.getName() + " " + strike.name());
+                        player.getInventory().addItem(md.getDeviceItem(strike, 1));
                         break;
                     case 1:
                         Device special = getRandomSpecialItem();
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "md " + player.getName() + " " + special.name());
+                        player.getInventory().addItem(md.getDeviceItem(special, 1));
                         break;
                     default:
                         Device buffitem = getRandomBuffItem();
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "md " + player.getName() + " " + buffitem.name());
+                        player.getInventory().addItem(md.getDeviceItem(buffitem, 1));
                         break;
                 }
             }
+        }
+    }
+
+    public static void giveRandomRewardOnKill(Player player) {
+        Random rand = new Random();
+        int rewardType = rand.nextInt(10);
+
+        switch (rewardType) {
+            case 0:
+                Device strike = getRandomAirStrike();
+                player.getInventory().addItem(md.getDeviceItem(strike, 1));
+                break;
+            case 1:
+                Device special = getRandomSpecialItem();
+                player.getInventory().addItem(md.getDeviceItem(special, 1));
+                break;
+            default:
+                Device buffitem = getRandomBuffItem();
+                player.getInventory().addItem(md.getDeviceItem(buffitem, 1));
+                break;
         }
     }
 
@@ -78,7 +99,7 @@ public class Rewards {
             case 1:
                 return Device.Adrenaline;
             case 2:
-                return Device.BulletproofVest;
+                return Device.KevlarPlate;
             case 3:
                 return Device.Stimulator;
         }
@@ -87,15 +108,6 @@ public class Rewards {
     }
 
     public static Device getRandomSpecialItem() {
-        Random rand = new Random();
-        int type = rand.nextInt(2);
-        switch (type) {
-            case 0:
-                return Device.Scanner;
-            case 1:
-                return Device.AllySummon;
-        }
-
         return Device.Scanner;
     }
 }

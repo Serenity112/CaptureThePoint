@@ -1,13 +1,16 @@
 package minecraftevent.capturethepoint;
 
 import minecraftevent.capturethepoint.capture.Point;
-import minecraftevent.capturethepoint.capture.PreEvent;
+import minecraftevent.capturethepoint.commands.killstreak;
+import minecraftevent.capturethepoint.eventcontrols.PreEvent;
 import minecraftevent.capturethepoint.capture.ProcessCapture;
 import minecraftevent.capturethepoint.commands.ctp;
 import minecraftevent.capturethepoint.commands.md;
 import minecraftevent.capturethepoint.commands.team;
+import minecraftevent.capturethepoint.inventoryclear.Clearer;
 import minecraftevent.capturethepoint.listeners.ChestListener;
 import minecraftevent.capturethepoint.listeners.ItemTrigger;
+import minecraftevent.capturethepoint.KillStreak.PlayerKillListener;
 import minecraftevent.capturethepoint.randomdrops.FallingReward;
 
 import org.bukkit.Bukkit;
@@ -54,15 +57,16 @@ public final class CaptureThePoint extends JavaPlugin {
         new team();
         new ctp();
         new md();
+        new killstreak();
 
         new FallingReward();
         new ProcessCapture(world);
         new PreEvent(world);
+        Clearer.startClear();
 
+        getServer().getPluginManager().registerEvents(new PlayerKillListener(), this);
         getServer().getPluginManager().registerEvents(new ChestListener(), this);
         getServer().getPluginManager().registerEvents(new ItemTrigger(), this);
-
-        ProcessCapture.startCapturing();
     }
 
     @Override
@@ -73,7 +77,7 @@ public final class CaptureThePoint extends JavaPlugin {
     private void initPoints(World world) {
         PointsArray.add(new Point(
                 "Middle",
-                new Location(world, -136, 65, -614),
+                new Location(world, -141, 65, -616),
                 State.NEU
         ));
 

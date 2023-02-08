@@ -6,7 +6,7 @@ public enum Device {
     AirstrikeBreakdown,
     Injection,
     Adrenaline,
-    BulletproofVest,
+    KevlarPlate,
     Scanner,
     Stimulator,
     AllySummon,

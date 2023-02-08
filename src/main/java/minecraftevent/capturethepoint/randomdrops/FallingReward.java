@@ -4,6 +4,7 @@ package minecraftevent.capturethepoint.randomdrops;
 import minecraftevent.capturethepoint.CaptureThePoint;
 import minecraftevent.capturethepoint.Devices.Device;
 
+import minecraftevent.capturethepoint.capture.Point;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -29,18 +30,34 @@ public class FallingReward {
     private static final ArrayList<Location> shulker_locations = new ArrayList<>();
     public static final HashMap<Location, int[]> summonedDrops = new HashMap<>();
 
+    public static int id = 0;
 
     public FallingReward() {
         world = Bukkit.getServer().getWorlds().get(0);
         pos1 = new Location(world, -72, 65, -749);
         pos2 = new Location(world, -210, 65, -511);
 
-        shulker_locations.add(new Location(world, -134, 58, -612)); //vss
-        shulker_locations.add(new Location(world, -134, 57, -612)); //minigun
-        shulker_locations.add(new Location(world, -134, 56, -612)); //rocket
-        shulker_locations.add(new Location(world, -135, 58, -612)); //pkm
-        shulker_locations.add(new Location(world, -135, 57, -612)); //serbu
-        shulker_locations.add(new Location(world, -135, 56, -612)); //mk47
+        shulker_locations.add(new Location(world, -139, 57, -615)); //vss
+        shulker_locations.add(new Location(world, -139, 56, -615)); //minigun
+        shulker_locations.add(new Location(world, -139, 55, -615)); //taurus
+
+        shulker_locations.add(new Location(world, -140, 57, -615)); //pkm
+        shulker_locations.add(new Location(world, -140, 56, -615)); //serbu
+        shulker_locations.add(new Location(world, -140, 55, -615)); //svdm
+
+        shulker_locations.add(new Location(world, -141, 55, -615)); //rocket
+    }
+
+    public static void startTimerDrop() {
+        id = Bukkit.getScheduler().scheduleSyncRepeatingTask(CaptureThePoint.getInstance(), () -> {
+            summonDrop();
+        }, 2400, 2400);
+    }
+
+    public static void stopTimerDrop() {
+       if(id != 0) {
+           Bukkit.getScheduler().cancelTask(id);
+       }
     }
 
     public static void summonDrop() {
@@ -58,11 +75,22 @@ public class FallingReward {
         Location dropLoc = raycastFromUp(new Location(world, x, 50, z), 120);
         Location newloc = dropLoc.add(0, 1, 0);
 
-        world.spawnParticle(Particle.CLOUD, x, newloc.getY() + 50, z, 100, 0, 25, 0, 0.01);
+        double dist = newloc.distance(CaptureThePoint.PointsArray.get(0).location);
+        Point closestPoint = CaptureThePoint.PointsArray.get(0);
+
+        for (Point point: CaptureThePoint.PointsArray) {
+            double newdist = newloc.distance(point.location);
+            if (newdist < dist) {
+                closestPoint = point;
+                dist = newdist;
+            }
+        }
+
+        world.spawnParticle(Particle.CLOUD, x, newloc.getY() + 50, z, 150, 0, 25, 0, 0.01);
 
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-            player.sendMessage(ChatColor.BOLD + "" + ChatColor.DARK_PURPLE + "Random drop from the sky at " + x + " " + newloc.getY() + " " + z);
+            player.sendMessage(ChatColor.BOLD + "" + ChatColor.AQUA + "Random drop from the sky at " + x + " " + newloc.getY() + " " + z + " at " + closestPoint.displayName);
         }
 
         Block block = newloc.getBlock();
@@ -91,14 +119,14 @@ public class FallingReward {
     }
 
     static void putRandomDropInChest(Block block, Random rand) {
-        int reward = rand.nextInt(7);
+        int reward = rand.nextInt(8);
 
         Chest chest = (Chest) block.getState();
         Inventory dropInv = chest.getInventory();
         chest.update(true);
 
         // Пушки
-        if (reward <= 5) {
+        if (reward < 7) {
             Inventory inv = ((ShulkerBox) shulker_locations.get(reward).getBlock().getState()).getInventory();
 
             for (ItemStack i : inv.getContents()) {
@@ -107,11 +135,11 @@ public class FallingReward {
                 }
             }
 
-            addRandomBuffsToChest(dropInv, rand);
+            addRandomBuffsToChest(dropInv);
         }
 
         // Эирстрайки
-        if (reward == 6) {
+        if (reward == 7) {
             for (int i = 0; i < 3; i++) {
                 switch (i) {
                     case 1:
@@ -129,7 +157,9 @@ public class FallingReward {
         }
     }
 
-    private static void addRandomBuffsToChest(Inventory chestinv, Random rand) {
+    private static void addRandomBuffsToChest(Inventory chestinv) {
+        Random rand = new Random();
+
         for (int i = 0; i < 4; i++) {
             switch (i) {
                 case 1:

@@ -1,6 +1,6 @@
 package minecraftevent.capturethepoint.commands;
 
-import minecraftevent.capturethepoint.capture.PreEvent;
+import minecraftevent.capturethepoint.eventcontrols.PreEvent;
 import minecraftevent.capturethepoint.capture.ProcessCapture;
 import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandSender;
@@ -29,6 +29,9 @@ public class ctp extends AbstractCommand {
                     break;
                 case "teleport":
                     PreEvent.teleportTeams();
+                    break;
+                case "teamstart":
+                    PreEvent.teamStart();
                     break;
             }
         }

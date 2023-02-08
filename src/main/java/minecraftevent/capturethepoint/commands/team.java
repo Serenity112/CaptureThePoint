@@ -27,10 +27,14 @@ public class team extends AbstractCommand {
                 case "red":
                     Team redteam = board.getTeam("Red");
                     redteam.addEntry(sender.getName());
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "noppes faction " + sender.getName() + " 4 set 2000");
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "noppes faction " + sender.getName() + " 3 set -2000");
                     break;
                 case "blue":
                     Team blueteam = board.getTeam("Blue");
                     blueteam.addEntry(sender.getName());
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "noppes faction " + sender.getName() + " 4 set -2000");
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "noppes faction " + sender.getName() + " 3 set 2000");
                     break;
                 default:
                     sender.sendMessage(ChatColor.RED + "Такая командая не участвует в ивенте!");
