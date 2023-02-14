@@ -2,8 +2,10 @@ package minecraftevent.capturethepoint.commands;
 
 import minecraftevent.capturethepoint.eventcontrols.PreEvent;
 import minecraftevent.capturethepoint.capture.ProcessCapture;
+import minecraftevent.capturethepoint.randomdrops.FallingReward;
 import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class ctp extends AbstractCommand {
     public ctp() {
@@ -32,6 +34,9 @@ public class ctp extends AbstractCommand {
                     break;
                 case "teamstart":
                     PreEvent.teamStart();
+                    break;
+                case "drop":
+                    FallingReward.summonDrop(((Player) sender).getLocation());
                     break;
             }
         }

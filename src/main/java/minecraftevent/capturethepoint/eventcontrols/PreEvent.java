@@ -25,7 +25,7 @@ public class PreEvent {
 
     private static Location red_meetup;
     private static Location blue_meetup;
-    private static float meetup_radius = 5f;
+    private static float meetup_radius = 6f;
 
     public PreEvent(World world) {
         PreEvent.world = world;
@@ -37,14 +37,24 @@ public class PreEvent {
         blue_spawn = new Location(world, 25, 65, -620);
         red_spawn = new Location(world, -297, 65, -643);
 
-        red_meetup = new Location(world, -141, 145, -612);
-        blue_meetup = new Location(world, -128, 145, -612);
+        red_meetup = new Location(world, -153, 165, -645);
+        blue_meetup = new Location(world, -140 , 165, -654);
     }
 
     public static void teamStart() {
-
-
         Bukkit.getScheduler().runTaskAsynchronously(CaptureThePoint.getInstance(), () -> {
+
+            for (int timer = 10; timer > 0; timer--) {
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    player.sendTitle(ChatColor.GREEN + Integer.toString(timer), "", 5, 20, 1);
+                }
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
 
             int red_count = 0;
             for (Entity nearby : world.getNearbyEntities(red_meetup, meetup_radius, meetup_radius, meetup_radius)) {
@@ -60,12 +70,15 @@ public class PreEvent {
                 }
             }
 
-            /*if (abs(red_count - blue_count) > 1 || red_count == 0 || blue_count == 0) {
+
+
+            if (abs(red_count - blue_count) > 1 || red_count == 0 || blue_count == 0) {
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     player.sendTitle(ChatColor.RED + "Unequal players number!", "", 10, 35, 20);
                 }
                 return;
-            }*/
+            }
+
 
             for (Entity nearby : world.getNearbyEntities(red_meetup, meetup_radius, meetup_radius, meetup_radius)) {
                 if (nearby instanceof Player) {
@@ -73,6 +86,10 @@ public class PreEvent {
 
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "noppes faction " + nearby.getName() + " 4 set 2000");
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "noppes faction " + nearby.getName() + " 3 set -2000");
+
+                    nearby.sendMessage(ChatColor.WHITE + "You joined " + ChatColor.RED + "Red " + ChatColor.WHITE + "team");
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "spawnpoint " + nearby.getName() + " " + red_spawn.getX() + " " + red_spawn.getY() + " " + red_spawn.getZ());
+                    nearby.teleport(red_spawn);
                 }
             }
 
@@ -82,31 +99,7 @@ public class PreEvent {
 
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "noppes faction " + nearby.getName() + " 4 set -2000");
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "noppes faction " + nearby.getName() + " 3 set 2000");
-                }
-            }
 
-            for (int timer = 10; timer > 0; timer--) {
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    player.sendTitle(ChatColor.GREEN + Integer.toString(timer), "", 5, 20, 1);
-                }
-
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            for (Entity nearby : world.getNearbyEntities(red_meetup, meetup_radius, meetup_radius, meetup_radius)) {
-                if (nearby instanceof Player) {
-                    nearby.sendMessage(ChatColor.WHITE + "You joined " + ChatColor.RED + "Red " + ChatColor.WHITE + "team");
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "spawnpoint " + nearby.getName() + " " + red_spawn.getX() + " " + red_spawn.getY() + " " + red_spawn.getZ());
-                    nearby.teleport(red_spawn);
-                }
-            }
-
-            for (Entity nearby : world.getNearbyEntities(blue_meetup, meetup_radius, meetup_radius, meetup_radius)) {
-                if (nearby instanceof Player) {
                     nearby.sendMessage(ChatColor.WHITE + "You joined " + ChatColor.BLUE + "Blue " + ChatColor.WHITE + "team");
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "spawnpoint " + nearby.getName() + " " + blue_spawn.getX() + " " + blue_spawn.getY() + " " + blue_spawn.getZ());
                     nearby.teleport(blue_spawn);

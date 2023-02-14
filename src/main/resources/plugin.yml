@@ -8,3 +8,4 @@ commands:
   drop: {}
   md: {}
   team: {}
+  killstreak: {}

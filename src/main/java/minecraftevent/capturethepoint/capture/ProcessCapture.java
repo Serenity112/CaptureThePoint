@@ -348,10 +348,10 @@ public class ProcessCapture {
 
             switch (state) {
                 case RED:
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "noppes clone spawn SovetRed 2 0:" + x + "," + y + "," + z);
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "noppes clone spawn Red 2 0:" + x + "," + y + "," + z);
                     break;
                 case BLUE:
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "noppes clone spawn NatoBlue 1 0:" + x + "," + y + "," + z);
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "noppes clone spawn Blue 1 0:" + x + "," + y + "," + z);
                     break;
             }
         }

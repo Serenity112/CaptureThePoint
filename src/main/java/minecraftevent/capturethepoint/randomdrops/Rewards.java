@@ -23,16 +23,14 @@ public class Rewards {
 
             if (player != null && player.isOnline()) {
                 if (entities.contains((Entity) player)) {
-                    // 75% тем, кто был в списке
-                    if (rand.nextInt(4) == 0)
+                    // 55% тем, кто был в списке
+                    if (rand.nextInt(100) > 55)
                         continue;
                 } else {
                     // 33% тем, кто не был в списке, но был в команде.
-                    if (rand.nextInt(3) != 0)
+                    if (rand.nextInt(5) != 0)
                         continue;
                 }
-
-                //Bukkit.getPlayer("VoidOfExtinction").sendMessage("Проверка пройдена");
 
                 // 100% всем кто прошёл проверку
                 int rewardType = rand.nextInt(10);

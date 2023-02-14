@@ -36,10 +36,12 @@ public class ChestListener implements Listener {
     public void onItemDrop(PlayerDropItemEvent e) {
         Item item = e.getItemDrop();
         int id = item.getItemStack().getTypeId();
-        if (id < 4000 || (id >= 4169 && id <= 4196) || (id >= 4254 && id <= 4271)) {
+
+        if (id != 4299 && (id < 4000 || (id >= 4169 && id <= 4196) || (id >= 4254 && id <= 4271))) {
             return;
         }
 
         e.setCancelled(true);
     }
+
 }

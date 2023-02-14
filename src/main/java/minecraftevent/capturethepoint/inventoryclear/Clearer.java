@@ -16,10 +16,48 @@ public class Clearer {
                 for(ItemStack item : player.getInventory().getContents()){
                     if (item != null) {
                         int id = item.getTypeId();
-                        if ((id >= 4169 && id <= 4196) || (id >= 4254 && id <= 4271)) {
-                            if(item.getDurability() >= 21) {
-                                item.setAmount(0);
-                            }
+
+                        switch (id) {
+                            case 4138: // автоматы и ППшки
+                            case 4185:
+                            case 4176:
+                            case 4265:
+                                if(item.getDurability() >= 21) {
+                                    item.setAmount(0);
+                                }
+                                break;
+                            case 4163: // узи
+                                if(item.getDurability() >= 17) {
+                                    item.setAmount(0);
+                                }
+                                break;
+                            case 4236: // пистолеты
+                            case 4254:
+                                if(item.getDurability() >= 13) {
+                                    item.setAmount(0);
+                                }
+                                break;
+                            case 4179: // Снайпы
+                            case 4186:
+                                if(item.getDurability() >= 4) {
+                                    item.setAmount(0);
+                                }
+                            case 4157: // Винторез
+                                if(item.getDurability() >= 7) {
+                                    item.setAmount(0);
+                                }
+                            case 4260: // Пулик
+                                if(item.getDurability() >= 85) {
+                                    item.setAmount(0);
+                                }
+                            case 4148: // Миниган
+                                if(item.getDurability() >= 135) {
+                                    item.setAmount(0);
+                                }
+                            case 4266: // свдм
+                                if(item.getDurability() >= 7) {
+                                    item.setAmount(0);
+                                }
                         }
                     }
                 }

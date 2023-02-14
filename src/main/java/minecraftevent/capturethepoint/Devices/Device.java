@@ -9,5 +9,4 @@ public enum Device {
     KevlarPlate,
     Scanner,
     Stimulator,
-    AllySummon,
 }

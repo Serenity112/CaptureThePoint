@@ -60,6 +60,56 @@ public class FallingReward {
        }
     }
 
+    public static void summonDrop(Location loc) {
+        Random rand = new Random();
+
+        Location dropLoc = raycastFromUp(loc, 120);
+        Location newloc = dropLoc.add(0, 1, 0);
+
+        double dist = newloc.distance(CaptureThePoint.PointsArray.get(0).location);
+        Point closestPoint = CaptureThePoint.PointsArray.get(0);
+
+        for (Point point: CaptureThePoint.PointsArray) {
+            double newdist = newloc.distance(point.location);
+            if (newdist < dist) {
+                closestPoint = point;
+                dist = newdist;
+            }
+        }
+
+        world.spawnParticle(Particle.CLOUD, newloc.getX(), newloc.getY() + 50, newloc.getZ(), 150, 0, 25, 0, 0.01);
+
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.sendMessage(ChatColor.BOLD + "" + ChatColor.AQUA + "Random drop from the sky at " + newloc.getX() + " " + newloc.getY() + " " + newloc.getZ() + " at " + closestPoint.displayName);
+        }
+
+        Block block = newloc.getBlock();
+        block.setType(Material.CHEST);
+
+        // Маркер
+        int chestMarkerTimer = Bukkit.getScheduler().scheduleSyncRepeatingTask(CaptureThePoint.getInstance(), () -> {
+            //world.spawnParticle(Particle.REDSTONE, block.getX(), block.getY(), block.getZ(), 100, 0.5, 2, 0.5, 0.02);
+
+            world.spawnParticle(Particle.SPELL_WITCH, block.getX(), block.getY(), block.getZ(), 300, 0.5, 8, 0.5, 10);
+        }, 0, 40);
+
+        // Удаление сундука через 3 минуты
+        int chestDespawnTimer = Bukkit.getScheduler().scheduleSyncDelayedTask(CaptureThePoint.getInstance(), () -> {
+            if (block.getType() == Material.CHEST) {
+                block.setType(Material.AIR);
+            }
+
+            Bukkit.getScheduler().cancelTask(chestMarkerTimer);
+            summonedDrops.remove(block.getLocation());
+        }, 3600);
+
+        summonedDrops.put(block.getLocation(), new int[]{chestDespawnTimer, chestMarkerTimer});
+
+        putRandomDropInChest(block, rand);
+    }
+
+
     public static void summonDrop() {
         Random rand = new Random();
 
