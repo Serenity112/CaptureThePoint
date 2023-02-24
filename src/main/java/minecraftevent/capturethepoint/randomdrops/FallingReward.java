@@ -34,18 +34,18 @@ public class FallingReward {
 
     public FallingReward() {
         world = Bukkit.getServer().getWorlds().get(0);
-        pos1 = new Location(world, -72, 65, -749);
-        pos2 = new Location(world, -210, 65, -511);
+        pos1 = new Location(world, -76, 65, -724); // у ботофермы
+        pos2 = new Location(world, -210, 65, -511); // на парковке
 
-        shulker_locations.add(new Location(world, -139, 57, -615)); //vss
-        shulker_locations.add(new Location(world, -139, 56, -615)); //minigun
-        shulker_locations.add(new Location(world, -139, 55, -615)); //taurus
+        shulker_locations.add(new Location(world, -129, 32, -612)); //vss
+        shulker_locations.add(new Location(world, -129, 31, -612)); //serbu
+        shulker_locations.add(new Location(world, -129, 30, -612)); //pkm
 
-        shulker_locations.add(new Location(world, -140, 57, -615)); //pkm
-        shulker_locations.add(new Location(world, -140, 56, -615)); //serbu
-        shulker_locations.add(new Location(world, -140, 55, -615)); //svdm
+        shulker_locations.add(new Location(world, -129, 32, -611)); //svdm
+        shulker_locations.add(new Location(world, -129, 31, -611)); //minigun
+        shulker_locations.add(new Location(world, -129, 30, -611)); //taurus
 
-        shulker_locations.add(new Location(world, -141, 55, -615)); //rocket
+        shulker_locations.add(new Location(world, -129, 30, -610)); //rocket
     }
 
     public static void startTimerDrop() {
@@ -140,7 +140,7 @@ public class FallingReward {
 
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-            player.sendMessage(ChatColor.BOLD + "" + ChatColor.AQUA + "Random drop from the sky at " + x + " " + newloc.getY() + " " + z + " at " + closestPoint.displayName);
+            player.sendMessage(ChatColor.BOLD + "" + ChatColor.AQUA + "Random drop from the sky at " + closestPoint.displayName);
         }
 
         Block block = newloc.getBlock();
@@ -184,8 +184,6 @@ public class FallingReward {
                     dropInv.addItem(i);
                 }
             }
-
-            addRandomBuffsToChest(dropInv);
         }
 
         // Эирстрайки
@@ -193,18 +191,20 @@ public class FallingReward {
             for (int i = 0; i < 3; i++) {
                 switch (i) {
                     case 1:
-                        if (rand.nextInt(100) >= 66)
-                            return;
+                        if (rand.nextInt(100) >= 75)
+                            continue;
                         break;
                     case 2:
-                        if (rand.nextInt(100) >= 33)
-                            return;
+                        if (rand.nextInt(100) >= 50)
+                            continue;
                         break;
                 }
 
                 dropInv.addItem(getDeviceItem(Rewards.getRandomAirStrike(), 1));
             }
         }
+
+        addRandomBuffsToChest(dropInv);
     }
 
     private static void addRandomBuffsToChest(Inventory chestinv) {

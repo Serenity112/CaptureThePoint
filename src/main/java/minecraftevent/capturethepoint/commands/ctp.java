@@ -1,5 +1,6 @@
 package minecraftevent.capturethepoint.commands;
 
+import minecraftevent.capturethepoint.KillStreak.PlayerKillListener;
 import minecraftevent.capturethepoint.eventcontrols.PreEvent;
 import minecraftevent.capturethepoint.capture.ProcessCapture;
 import minecraftevent.capturethepoint.randomdrops.FallingReward;
@@ -29,14 +30,26 @@ public class ctp extends AbstractCommand {
                 case "reset":
                     ProcessCapture.resetCapturing();
                     break;
-                case "teleport":
-                    PreEvent.teleportTeams();
-                    break;
                 case "teamstart":
                     PreEvent.teamStart();
                     break;
                 case "drop":
                     FallingReward.summonDrop(((Player) sender).getLocation());
+                    break;
+                case "stats":
+                    PlayerKillListener.PrintKD();
+                    break;
+                case "jointeam":
+                    PreEvent.addPlayer(args[1], args[2]);
+                    break;
+                case "leaveteam":
+                    PreEvent.delPlayer(args[1], args[2]);
+                    break;
+                case "teamstats":
+                    PreEvent.teamstats(sender.getName());
+                    break;
+                case "joining":
+                    PreEvent.joining_mode = true;
                     break;
             }
         }

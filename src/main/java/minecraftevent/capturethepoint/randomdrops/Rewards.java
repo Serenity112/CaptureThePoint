@@ -27,8 +27,8 @@ public class Rewards {
                     if (rand.nextInt(100) > 55)
                         continue;
                 } else {
-                    // 33% тем, кто не был в списке, но был в команде.
-                    if (rand.nextInt(5) != 0)
+                    // 20% тем, кто не был в списке, но был в команде.
+                    if (rand.nextInt(100) > 20)
                         continue;
                 }
 
@@ -106,6 +106,7 @@ public class Rewards {
     }
 
     public static Device getRandomSpecialItem() {
-        return Device.Scanner;
+        return getRandomBuffItem(); // Временно, пока не починен сканнер
+        //return Device.Scanner;
     }
 }

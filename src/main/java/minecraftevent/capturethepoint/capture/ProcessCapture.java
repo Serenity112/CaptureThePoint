@@ -210,7 +210,7 @@ public class ProcessCapture {
                             Rewards.giveRandomRewardOnCapture(world.getNearbyEntities(point.location, radius, radius, radius), redTeam);
                             scoreboardSetPointState(point, RED);
 
-                            if ((new Random().nextInt(10)) == 0) {
+                            if ((new Random().nextInt(100)) < 15) {
                                 spawnAlly(point.location, RED);
                             }
                         }
@@ -235,7 +235,7 @@ public class ProcessCapture {
                             Rewards.giveRandomRewardOnCapture(world.getNearbyEntities(point.location, radius, radius, radius), blueTeam);
                             scoreboardSetPointState(point, BLUE);
 
-                            if ((new Random().nextInt(10)) == 0) {
+                            if ((new Random().nextInt(100)) < 15) {
                                 spawnAlly(point.location, BLUE);
                             }
                         }
@@ -328,16 +328,13 @@ public class ProcessCapture {
     }
 
     public static void resetCapturing() {
-        FallingReward.stopTimerDrop();
-        FallingReward.startTimerDrop();
-
         resetScoreboard();
     }
 
     private static void spawnAlly(Location location, CaptureThePoint.State state) {
         Random rand = new Random();
 
-        int allynum = getRandomNumberInRange(1, 2, rand);
+        int allynum = getRandomNumberInRange(1, 3, rand);
 
         for (int i = 0; i < allynum; i++) {
             double r = 4 * sqrt(random());

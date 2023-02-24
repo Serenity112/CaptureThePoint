@@ -1,13 +1,13 @@
 package minecraftevent.capturethepoint.Devices;
 
 import minecraftevent.capturethepoint.CaptureThePoint;
-import net.minecraft.server.v1_12_R1.DataWatcher;
+/*import net.minecraft.server.v1_12_R1.DataWatcher;
 import net.minecraft.server.v1_12_R1.DataWatcherObject;
 import net.minecraft.server.v1_12_R1.DataWatcherRegistry;
-import net.minecraft.server.v1_12_R1.PacketPlayOutEntityMetadata;
+import net.minecraft.server.v1_12_R1.PacketPlayOutEntityMetadata;*/
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
+//import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
@@ -51,7 +51,7 @@ public class Scanner {
                                 found = true;
                                 nearby.sendMessage(ChatColor.DARK_RED + "You got scanned!");
 
-                                final int id = Bukkit.getScheduler().scheduleSyncRepeatingTask(CaptureThePoint.getInstance(), () -> {
+                                /*final int id = Bukkit.getScheduler().scheduleSyncRepeatingTask(CaptureThePoint.getInstance(), () -> {
                                     DataWatcher dw = ((CraftPlayer) nearby).getHandle().getDataWatcher();
                                     dw.set(new DataWatcherObject<Byte>(0, DataWatcherRegistry.a), (byte) 0x40);
                                     PacketPlayOutEntityMetadata data = new PacketPlayOutEntityMetadata(nearby.getEntityId(), dw, false);
@@ -60,7 +60,7 @@ public class Scanner {
 
                                 Bukkit.getScheduler().scheduleSyncDelayedTask(CaptureThePoint.getInstance(), () -> {
                                     Bukkit.getScheduler().cancelTask(id);
-                                }, 80);
+                                }, 80);*/
                             }
                         }
                     }

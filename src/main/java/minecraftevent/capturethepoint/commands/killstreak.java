@@ -30,6 +30,9 @@ public class killstreak extends AbstractCommand {
 
     @Override
     public void execute(CommandSender sender, String label, String[] args) throws CommandException {
+        if(!sender.isOp())
+            return;
+
         if (args.length > 0) {
             String option = args[1];
 
@@ -68,6 +71,12 @@ public class killstreak extends AbstractCommand {
                 streakname += "_" + board.getEntryTeam(player.getName()).getName();
             }
 
+            if(Objects.equals(kit, "sniper") && modlevel == 4) {
+                if(level > 4) {
+                    streakname += "_ammo";
+                }
+            }
+
             if(Objects.equals(kit, "bomber") && modlevel == 2) {
                 streakname += "_" + board.getEntryTeam(player.getName()).getName();
             }
@@ -93,7 +102,7 @@ public class killstreak extends AbstractCommand {
     }
 
     private static void ksBomberRocket(Player player) {
-        Location loc = new Location(player.getWorld(), -143, 55, -619);
+        Location loc = new Location(player.getWorld(), -129, 30, -608);
         Inventory inv = player.getInventory();
         Inventory ks_inv = ((ShulkerBox) loc.getBlock().getState()).getInventory();
         for (ItemStack i : ks_inv.getContents()) {
@@ -104,7 +113,7 @@ public class killstreak extends AbstractCommand {
     }
 
     private static void ksBomberAmmo(Player player) {
-        Location loc = new Location(player.getWorld(), -142, 55, -619);
+        Location loc = new Location(player.getWorld(), -129, 30, -607);
         Inventory inv = player.getInventory();
         Inventory ks_inv = ((ShulkerBox) loc.getBlock().getState()).getInventory();
         for (ItemStack i : ks_inv.getContents()) {

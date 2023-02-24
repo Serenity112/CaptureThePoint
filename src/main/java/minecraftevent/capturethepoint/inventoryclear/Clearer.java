@@ -18,44 +18,44 @@ public class Clearer {
                         int id = item.getTypeId();
 
                         switch (id) {
-                            case 4138: // автоматы и ППшки
-                            case 4185:
-                            case 4176:
-                            case 4265:
+                            case 4183: // M4A1
+                            case 4185: // AK109
+                            case 4176: // MP5K
+                            case 4265: // Aug PARA
                                 if(item.getDurability() >= 21) {
                                     item.setAmount(0);
                                 }
                                 break;
-                            case 4163: // узи
+                            case 4181: // узи
                                 if(item.getDurability() >= 17) {
                                     item.setAmount(0);
                                 }
                                 break;
-                            case 4236: // пистолеты
-                            case 4254:
+                            case 4254: // Grach
+                            case 4267: // Glock
                                 if(item.getDurability() >= 13) {
                                     item.setAmount(0);
                                 }
                                 break;
-                            case 4179: // Снайпы
-                            case 4186:
+                            case 4179: // Mosin
+                            case 4186: // L11
                                 if(item.getDurability() >= 4) {
                                     item.setAmount(0);
                                 }
-                            case 4157: // Винторез
-                                if(item.getDurability() >= 7) {
+                            case 4180: // Винторез
+                                if(item.getDurability() >= 8) {
                                     item.setAmount(0);
                                 }
                             case 4260: // Пулик
                                 if(item.getDurability() >= 85) {
                                     item.setAmount(0);
                                 }
-                            case 4148: // Миниган
+                            case 4175: // Миниган
                                 if(item.getDurability() >= 135) {
-                                    item.setAmount(0);
+                                    //item.setAmount(0); // Миниган имба, все патроны нужны
                                 }
                             case 4266: // свдм
-                                if(item.getDurability() >= 7) {
+                                if(item.getDurability() >= 8) {
                                     item.setAmount(0);
                                 }
                         }

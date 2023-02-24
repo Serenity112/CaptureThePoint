@@ -61,12 +61,13 @@ public final class CaptureThePoint extends JavaPlugin {
 
         new FallingReward();
         new ProcessCapture(world);
-        new PreEvent(world);
-        Clearer.startClear();
 
         getServer().getPluginManager().registerEvents(new PlayerKillListener(), this);
         getServer().getPluginManager().registerEvents(new ChestListener(), this);
         getServer().getPluginManager().registerEvents(new ItemTrigger(), this);
+        getServer().getPluginManager().registerEvents(new PreEvent(world), this);
+
+        Clearer.startClear();
     }
 
     @Override

@@ -75,6 +75,10 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
+        <repository>
+            <id>sk89q-repo</id>
+            <url>https://maven.enginehub.org/repo/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -96,10 +100,10 @@
             <artifactId>RayCastUtility</artifactId>
             <version>1.1.0</version>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
             <version>1.12.2-R0.1-SNAPSHOT</version>
-        </dependency>
+        </dependency>-->
     </dependencies>
 </project>

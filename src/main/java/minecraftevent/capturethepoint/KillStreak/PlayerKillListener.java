@@ -1,8 +1,10 @@
 package minecraftevent.capturethepoint.KillStreak;
+
 import minecraftevent.capturethepoint.CaptureThePoint;
 import minecraftevent.capturethepoint.commands.killstreak;
 import minecraftevent.capturethepoint.randomdrops.Rewards;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -17,6 +19,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import static org.bukkit.Bukkit.*;
@@ -27,9 +30,30 @@ public class PlayerKillListener implements Listener {
 
     public static HashMap<String, DelayedKillstreak> temporaryPlayerKillers = new HashMap<>();
 
+    public static HashMap<String, int[]> playerKDstats = new HashMap<>();
+
+    public static void PrintKD() {
+        StringBuilder stats = new StringBuilder();
+
+        for (Map.Entry<String, int[]> entry : playerKDstats.entrySet()) {
+            String key = entry.getKey();
+            int[] value = entry.getValue();
+
+            stats.append(ChatColor.GREEN + "" + ChatColor.BOLD + key + ":");
+            stats.append(ChatColor.WHITE + " Kills: " + ChatColor.RED + "" + ChatColor.BOLD + Integer.toString(value[0]));
+            stats.append(ChatColor.WHITE + ",");
+            stats.append(ChatColor.WHITE + " Deaths: " + ChatColor.BLUE + "" + ChatColor.BOLD + Integer.toString(value[1]));
+            stats.append("\n");
+        }
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.sendMessage(ChatColor.BLUE + "GAME STATISTICS:");
+            player.sendMessage(stats.toString());
+        }
+    }
 
     public PlayerKillListener() {
-        for(Player player: getOnlinePlayers()) {
+        for (Player player : getOnlinePlayers()) {
             setPlayerSpeciality(player.getName(), "assault", killstreak.default_level);
         }
     }
@@ -53,7 +77,6 @@ public class PlayerKillListener implements Listener {
         Player killed = e.getEntity();
         Player killer = e.getEntity().getKiller();
 
-
         String killedname = killed.getName();
         String killername = killer == null ? null : killer.getName();
 
@@ -76,6 +99,23 @@ public class PlayerKillListener implements Listener {
             killer.playSound(killer.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 3.0F, 0.5F);
         }
 
+        if (playerKDstats.containsKey(killedname)) {
+            int[] kd = playerKDstats.get(killedname);
+            playerKDstats.put(killedname, new int[]{kd[0], kd[1] + 1});
+        } else {
+            playerKDstats.put(killedname, new int[]{0, 1});
+        }
+
+        if(killer != null) {
+            if (playerKDstats.containsKey(killername)) {
+                int[] kd = playerKDstats.get(killername);
+                playerKDstats.put(killername, new int[]{kd[0] + 1, kd[1]});
+            } else {
+                playerKDstats.put(killername, new int[]{1, 0});
+            }
+        }
+
+
         UserData.put(killedname, new PlayerData(UserData.get(killedname).speciality, killstreak.default_level));
         killed.getInventory().clear();
         killed.getInventory().setHeldItemSlot(0);
@@ -91,7 +131,7 @@ public class PlayerKillListener implements Listener {
 
     public static void setPlayerKiller(Entity damaged, Entity damager) {
         if (damaged instanceof Player && damager instanceof Player) {
-            if(temporaryPlayerKillers.containsKey(damaged.getName())) {
+            if (temporaryPlayerKillers.containsKey(damaged.getName())) {
                 int id = temporaryPlayerKillers.get(damaged.getName()).scheduleId;
                 Bukkit.getScheduler().cancelTask(id);
             }
@@ -111,7 +151,7 @@ public class PlayerKillListener implements Listener {
         }, 20);
     }
 
-    private void givePlayerSaturation(Player player){
+    private void givePlayerSaturation(Player player) {
         player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 999999, 0, true, false));
     }
 }

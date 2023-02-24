@@ -36,7 +36,7 @@ public class AirStrike {
             player.sendMessage(ChatColor.DARK_RED + "Target is out of range.");
             throw new CommandException();
         } else {
-            player.sendMessage(ChatColor.DARK_GREEN + "Coordinates received, expect airstrikes.");
+            player.sendMessage(ChatColor.DARK_GREEN + "Coordinates received, wait for the airstrikes.");
         }
 
         List<Location> targetList = new ArrayList<>();
@@ -120,7 +120,7 @@ public class AirStrike {
             player.sendMessage(ChatColor.DARK_RED + "Target is out of range.");
             throw new CommandException();
         } else {
-            player.sendMessage(ChatColor.DARK_GREEN + "Coordinates received, expect airstrikes.");
+            player.sendMessage(ChatColor.DARK_GREEN + "Coordinates received, wait for the airstrikes.");
         }
 
         Location targetBlowLocation = target.getBlock().getLocation();
@@ -234,6 +234,7 @@ public class AirStrike {
                 // Между разными кластерными взрывами
                 sleep(blowDelay);
             }
+
         });
     }
 
@@ -241,12 +242,15 @@ public class AirStrike {
         World world = player.getWorld();
 
         float blowCount = 2f;
-        float areaRadius = 5f;
+        float areaRadius = 6f;
         float explosionPower = 7f;
 
         int thickness = 5;
         int breakdownCount = 3;
         float breakdownChance = 0.75f;
+
+        float aimChance = 0.66f;
+        float aimSlice = 0.25f;
 
         int blowDelay = 350;
         float maxDistance = 200;
@@ -260,32 +264,11 @@ public class AirStrike {
             player.sendMessage(ChatColor.DARK_RED + "Target is out of range.");
             throw new CommandException();
         } else {
-            player.sendMessage(ChatColor.DARK_GREEN + "Coordinates received, expect airstrikes.");
+            player.sendMessage(ChatColor.DARK_GREEN + "Coordinates received, wait for the airstrikes.");
         }
 
         Location targetBlowLocation = target.getBlock().getLocation();
-        List<Location> targetList = new ArrayList<>();
 
-        double r0 = 2 * sqrt(random());
-        double theta0 = random() * 2 * PI;
-        double x0 = targetBlowLocation.getX() + r0 * cos(theta0);
-        double z0 = targetBlowLocation.getZ() + r0 * sin(theta0);
-        Location newLoc0 = new Location(world, x0, targetBlowLocation.getY(), z0);
-        targetList.add(newLoc0);
-
-
-        // Пресет точек
-        for (int maincounter = 1; maincounter < blowCount; maincounter++) {
-            double r = areaRadius * sqrt(random());
-            double theta = random() * 2 * PI;
-            double x = targetBlowLocation.getX() + r * cos(theta);
-            double z = targetBlowLocation.getZ() + r * sin(theta);
-
-            Location newLoc = new Location(world, x, targetBlowLocation.getY(), z);
-            targetList.add(newLoc);
-        }
-
-        // Взрывы
         Bukkit.getScheduler().runTaskAsynchronously(CaptureThePoint.getInstance(), () -> {
             for (Entity nearby : world.getNearbyEntities(targetBlowLocation, alertRadius, alertRadius, alertRadius)) {
                 if (nearby instanceof Player) {
@@ -302,9 +285,48 @@ public class AirStrike {
                 sleep(1000);
             }
 
+            // Удары
+            for (int maincounter = 0; maincounter < blowCount; maincounter++) {
+                double radius = maincounter == 0 ? 0 : areaRadius;
+                double r = radius * sqrt(random());
+                double theta = random() * 2 * PI;
+                double x = targetBlowLocation.getX() + r * cos(theta);
+                double z = targetBlowLocation.getZ() + r * sin(theta);
 
-            for (Location loc : targetList) {
-                ArrayList<Location> breakdownLocs = raycastFromUpBreakdown(loc, maxHeight, thickness, breakdownCount, breakdownChance);
+                Location newLoc = new Location(world, x, targetBlowLocation.getY(), z);
+
+                // Аим
+                if (aimChance > 0f) {
+                    ArrayList<Location> playerLocationList = new ArrayList<>();
+
+                    for (Entity nearby : world.getNearbyEntities(targetBlowLocation, areaRadius, areaRadius, areaRadius)) {
+                        if (nearby instanceof Player) {
+                            Player targetPlayer = (Player) nearby;
+                            playerLocationList.add(targetPlayer.getLocation());
+                        }
+                    }
+
+                    if (playerLocationList.size() > 0) {
+                        Location aimLoc = playerLocationList.get(ThreadLocalRandom.current().nextInt(0, playerLocationList.size()));
+
+                        if (aimChance == 1f) {
+                            newLoc = aimLoc;
+                        } else {
+                            while (true) {
+                                if (aimChance > random()) {
+                                    Location one = newLoc.clone().multiply(1 - aimSlice);
+                                    Location two = aimLoc.clone().multiply(aimSlice);
+
+                                    newLoc = one.add(two);
+                                } else {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                ArrayList<Location> breakdownLocs = raycastFromUpBreakdown(newLoc, maxHeight, thickness, breakdownCount, breakdownChance);
 
                 float powerDowngrade = 1.0f;
                 for (Location breakdown : breakdownLocs) {
@@ -332,7 +354,6 @@ public class AirStrike {
                 sleep(blowDelay);
             }
         });
-
     }
 
     private static Location raycastFromUp(Location curr, int height) {
