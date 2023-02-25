@@ -8,7 +8,7 @@ import minecraftevent.capturethepoint.commands.ctp;
 import minecraftevent.capturethepoint.commands.md;
 import minecraftevent.capturethepoint.commands.team;
 import minecraftevent.capturethepoint.inventoryclear.Clearer;
-import minecraftevent.capturethepoint.listeners.ChestListener;
+import minecraftevent.capturethepoint.listeners.GameListeners;
 import minecraftevent.capturethepoint.listeners.ItemTrigger;
 import minecraftevent.capturethepoint.KillStreak.PlayerKillListener;
 import minecraftevent.capturethepoint.randomdrops.FallingReward;
@@ -63,7 +63,7 @@ public final class CaptureThePoint extends JavaPlugin {
         new ProcessCapture(world);
 
         getServer().getPluginManager().registerEvents(new PlayerKillListener(), this);
-        getServer().getPluginManager().registerEvents(new ChestListener(), this);
+        getServer().getPluginManager().registerEvents(new GameListeners(), this);
         getServer().getPluginManager().registerEvents(new ItemTrigger(), this);
         getServer().getPluginManager().registerEvents(new PreEvent(world), this);
 

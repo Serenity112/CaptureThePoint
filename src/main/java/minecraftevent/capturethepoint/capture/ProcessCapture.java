@@ -68,7 +68,7 @@ public class ProcessCapture {
 
         int num = 11;
 
-        for (Point point : CaptureThePoint.getInstance().PointsArray) {
+        for (Point point : CaptureThePoint.PointsArray) {
             point.timer = 0;
             point.state = NEU;
             point.numberInScoreboard = num;
@@ -163,7 +163,7 @@ public class ProcessCapture {
         FallingReward.startTimerDrop();
 
         capturingId = Bukkit.getScheduler().scheduleSyncRepeatingTask(CaptureThePoint.getInstance(), () -> {
-            for (Point point : CaptureThePoint.getInstance().PointsArray) {
+            for (Point point : CaptureThePoint.PointsArray) {
 
                 boolean foundRedPlayer = false;
                 boolean foundBluePlayer = false;
@@ -209,10 +209,6 @@ public class ProcessCapture {
                         if (point.state != RED) {
                             Rewards.giveRandomRewardOnCapture(world.getNearbyEntities(point.location, radius, radius, radius), redTeam);
                             scoreboardSetPointState(point, RED);
-
-                            if ((new Random().nextInt(100)) < 15) {
-                                spawnAlly(point.location, RED);
-                            }
                         }
 
 
@@ -234,10 +230,6 @@ public class ProcessCapture {
                         if (point.state != BLUE) {
                             Rewards.giveRandomRewardOnCapture(world.getNearbyEntities(point.location, radius, radius, radius), blueTeam);
                             scoreboardSetPointState(point, BLUE);
-
-                            if ((new Random().nextInt(100)) < 15) {
-                                spawnAlly(point.location, BLUE);
-                            }
                         }
 
                         for (Entity nearbyEntity : world.getNearbyEntities(point.location, 3 * radius, 3 * radius, 3 * radius)) {
@@ -331,6 +323,7 @@ public class ProcessCapture {
         resetScoreboard();
     }
 
+    // Не используется
     private static void spawnAlly(Location location, CaptureThePoint.State state) {
         Random rand = new Random();
 

@@ -96,7 +96,6 @@ public class killstreak extends AbstractCommand {
             }
         }
 
-
         String command = "kit give " + streakname + " " + player.getName();
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
     }
@@ -122,6 +121,4 @@ public class killstreak extends AbstractCommand {
             }
         }
     }
-
-
 }

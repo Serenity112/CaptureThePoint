@@ -20,7 +20,7 @@ import org.bukkit.inventory.ItemStack;
 
 import static org.bukkit.Bukkit.getServer;
 
-public class ChestListener implements Listener {
+public class GameListeners implements Listener {
     @EventHandler
     public void onInventoryOpenEvent(PlayerInteractEvent e) {
         if (e.getAction() == Action.RIGHT_CLICK_BLOCK && e.getClickedBlock().getType() == Material.CHEST) {
@@ -55,7 +55,9 @@ public class ChestListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event)
     {
-        Player p = event.getPlayer();
+        // Выдача книг
+
+        /*Player p = event.getPlayer();
         Inventory p_inv = p.getInventory();
 
         Location book_lok = new Location(getServer().getWorlds().get(0), -129, 30, -605);
@@ -65,6 +67,6 @@ public class ChestListener implements Listener {
             if (i != null) {
                 p_inv.addItem(i);
             }
-        }
+        }*/
     }
 }

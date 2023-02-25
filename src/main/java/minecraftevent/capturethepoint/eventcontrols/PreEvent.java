@@ -2,29 +2,17 @@ package minecraftevent.capturethepoint.eventcontrols;
 
 import minecraftevent.capturethepoint.CaptureThePoint;
 import org.bukkit.*;
-import org.bukkit.block.ShulkerBox;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import org.bukkit.event.EventHandler;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
-
-import static java.lang.Math.abs;
-import static org.bukkit.Bukkit.getServer;
 
 public class PreEvent implements Listener {
-    private static World world;
-
     private static Location blue_spawn;
     private static Location red_spawn;
 
@@ -45,8 +33,6 @@ public class PreEvent implements Listener {
     private static Team blue_team;
 
     public PreEvent(World world) {
-        PreEvent.world = world;
-
         board = CaptureThePoint.board;
 
         spawn_location = new Location(world, -147, 165, -654);
