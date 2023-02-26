@@ -12,6 +12,8 @@ import org.bukkit.event.EventHandler;
 
 import java.util.ArrayList;
 
+import static org.bukkit.Bukkit.getConsoleSender;
+
 public class PreEvent implements Listener {
     private static Location blue_spawn;
     private static Location red_spawn;
@@ -51,39 +53,46 @@ public class PreEvent implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        String playername = player.getName();
-
-        if (joining_mode) {
+        if (joining_mode || event_active) {
             player.teleport(spawn_location);
-        }
 
-        Team team = board.getEntryTeam(player.getName());
+            player.getInventory().clear();
+            Bukkit.dispatchCommand(getConsoleSender(), "mw-clear " + player.getName());
 
-        if (team != null) {
-            player.sendMessage("You were removed from " + team.getName() + " team! Reselect.");
-
-            switch (team.getName()) {
-                case "Red":
-                    red_players.remove(playername);
-                    red_team.removeEntry(playername);
-                    break;
-                case "Blue":
-                    blue_players.remove(playername);
-                    blue_team.removeEntry(playername);
-                    break;
-            }
+            player.sendMessage(ChatColor.RED + "You were removed from the team! Reselect.");
         }
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
+        if (joining_mode || event_active) {
+            Player player = event.getPlayer();
+
+            String playername = player.getName();
+
+            Team team = board.getEntryTeam(player.getName());
+
+            red_players.remove(playername);
+            blue_players.remove(playername);
+
+            if (team != null) {
+                switch (team.getName()) {
+                    case "Red":
+                        red_team.removeEntry(playername);
+                        break;
+                    case "Blue":
+                        blue_team.removeEntry(playername);
+                        break;
+                }
+            }
+        }
     }
 
     private static void processPlayer(Player player, String team) {
         switch (team) {
             case "Red":
                 red_team.addEntry(player.getName());
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "spawnpoint " + player.getName() + " " + blue_spawn.getX() + " " + blue_spawn.getY() + " " + blue_spawn.getZ());
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "spawnpoint " + player.getName() + " " + red_spawn.getX() + " " + red_spawn.getY() + " " + red_spawn.getZ());
                 player.teleport(red_spawn);
                 break;
             case "Blue":

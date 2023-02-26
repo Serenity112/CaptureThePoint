@@ -242,7 +242,7 @@ public class AirStrike {
         World world = player.getWorld();
 
         float blowCount = 2f;
-        float areaRadius = 5f;
+        float areaRadius = 6f;
         float explosionPower = 7f;
 
         int thickness = 5;

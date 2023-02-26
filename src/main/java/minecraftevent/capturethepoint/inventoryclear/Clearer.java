@@ -13,15 +13,19 @@ public class Clearer {
         celear_id = Bukkit.getScheduler().scheduleSyncRepeatingTask(CaptureThePoint.getInstance(), () -> {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 Inventory inv = player.getInventory();
-                for(ItemStack item : player.getInventory().getContents()){
+                for(ItemStack item : inv.getContents()){
                     if (item != null) {
                         int id = item.getTypeId();
 
                         switch (id) {
                             case 4183: // M4A1
+                            case 4796: // M4A1 anim
                             case 4185: // AK109
+                            case 4776: // AK109 anim
                             case 4176: // MP5K
+                            case 4782: // MP5K anim
                             case 4265: // Aug PARA
+                            case 4779: // pp19 anim
                                 if(item.getDurability() >= 21) {
                                     item.setAmount(0);
                                 }
@@ -33,12 +37,16 @@ public class Clearer {
                                 break;
                             case 4254: // Grach
                             case 4267: // Glock
+                            case 4798: // Glock anim
+                            case 4427: // mp443
                                 if(item.getDurability() >= 13) {
                                     item.setAmount(0);
                                 }
                                 break;
                             case 4179: // Mosin
                             case 4186: // L11
+                            case 4788: // L11 anim
+                            case 4785: // sv98
                                 if(item.getDurability() >= 4) {
                                     item.setAmount(0);
                                 }

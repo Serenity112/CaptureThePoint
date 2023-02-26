@@ -66,10 +66,6 @@ public class PlayerKillListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
         setPlayerSpeciality(player.getName(), "assault", killstreak.default_level);
-
-        Bukkit.getScheduler().scheduleSyncDelayedTask(CaptureThePoint.getInstance(), () -> {
-            givePlayerSaturation(e.getPlayer());
-        }, 20);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -142,16 +138,5 @@ public class PlayerKillListener implements Listener {
 
             temporaryPlayerKillers.put(damaged.getName(), new DelayedKillstreak(newId, damager.getName()));
         }
-    }
-
-    @EventHandler()
-    public void onPlayerRespawn(PlayerRespawnEvent e) {
-        Bukkit.getScheduler().scheduleSyncDelayedTask(CaptureThePoint.getInstance(), () -> {
-            givePlayerSaturation(e.getPlayer());
-        }, 20);
-    }
-
-    private void givePlayerSaturation(Player player) {
-        player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 999999, 0, true, false));
     }
 }

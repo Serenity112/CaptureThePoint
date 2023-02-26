@@ -45,28 +45,15 @@ public class GameListeners implements Listener {
         Item item = e.getItemDrop();
         int id = item.getItemStack().getTypeId();
 
+        // Аним пушки
+        if(id == 4784 || id == 4770 || id == 4766 || id == 4781 || id == 4762 || id == 4790 || id == 4756 || id == 4758) {
+            e.setCancelled(true);
+        }
+
         if (id == 4299 || id == 4222 || id == 4223 || id == 4132 || id < 4000 || (id >= 4169 && id <= 4196) || (id >= 4254 && id <= 4271) || (id >= 4300)) {
             return;
         }
 
         e.setCancelled(true);
-    }
-
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event)
-    {
-        // Выдача книг
-
-        /*Player p = event.getPlayer();
-        Inventory p_inv = p.getInventory();
-
-        Location book_lok = new Location(getServer().getWorlds().get(0), -129, 30, -605);
-        Inventory inv = ((ShulkerBox) book_lok.getBlock().getState()).getInventory();
-
-        for (ItemStack i : inv.getContents()) {
-            if (i != null) {
-                p_inv.addItem(i);
-            }
-        }*/
     }
 }

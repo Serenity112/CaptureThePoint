@@ -49,7 +49,7 @@ public class ctp extends AbstractCommand {
                     PreEvent.teamstats(sender.getName());
                     break;
                 case "joining":
-                    PreEvent.joining_mode = true;
+                    PreEvent.joining_mode = !PreEvent.joining_mode;
                     break;
             }
         }
